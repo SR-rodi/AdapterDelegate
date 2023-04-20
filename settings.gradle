@@ -14,4 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Payloads"
 include ':app'
-include ':adapterdelegate'
