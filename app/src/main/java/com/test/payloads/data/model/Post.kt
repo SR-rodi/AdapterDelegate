@@ -5,4 +5,9 @@ data class Post(
     val text: String,
     val poster: Int,
     val isFavorite: Boolean,
+) : DisplayPrint
+
+data class News(
+    val id: Int,
+    val text: String,
 ):DisplayPrint

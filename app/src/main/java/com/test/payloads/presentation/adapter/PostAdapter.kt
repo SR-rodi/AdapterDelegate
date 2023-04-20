@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.test.payloads.data.model.News
 import com.test.payloads.data.model.Post
-import com.test.payloads.databinding.ItemBinding
+import com.test.payloads.databinding.ItemNewsBinding
+import com.test.payloads.databinding.ItemPostBinding
 
 class PostAdapter(private val onClickItem: (position: Int) -> Unit) :
     ListAdapter<Post, PostViewHolder>(PostDiff()) {
@@ -28,7 +30,7 @@ class PostAdapter(private val onClickItem: (position: Int) -> Unit) :
     }
 }
 
-class PostViewHolder(private val binding: ItemBinding, onClickItem: (position: Int) -> Unit) :
+class PostViewHolder(private val binding: ItemPostBinding, onClickItem: (position: Int) -> Unit) :
     RecyclerView.ViewHolder(binding.root) {
 
     init {
@@ -49,8 +51,24 @@ class PostViewHolder(private val binding: ItemBinding, onClickItem: (position: I
 
     companion object {
         fun create(parent: ViewGroup, onClickItem: (position: Int) -> Unit) = PostViewHolder(
-            ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             onClickItem
+        )
+    }
+
+}
+
+
+class NewsViewHolder(private val binding: ItemNewsBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(item: News) {
+        binding.title.text = item.text
+    }
+
+    companion object {
+        fun create(parent: ViewGroup) = NewsViewHolder(
+            ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 

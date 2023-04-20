@@ -12,6 +12,7 @@ import com.test.delegate.RecyclerViewAdapter
 import com.test.payloads.data.model.DisplayPrint
 import com.test.payloads.databinding.FragmentPostBinding
 import com.test.payloads.presentation.adapter.PostAdapter
+import com.test.payloads.test.NewsAdapterDelegate
 import com.test.payloads.test.PostAdapterDelegate
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,7 +45,10 @@ class PostFragment : Fragment() {
     private fun postObserver() = viewLifecycleOwner.lifecycleScope.launch {
         viewModel.post.collect { listPost ->
             val adapter2 = RecyclerViewAdapter(
-                AdaptersDelegateManager(PostAdapterDelegate(::onClickItem)), listPost
+                AdaptersDelegateManager(
+                    PostAdapterDelegate(::onClickItem),
+                    NewsAdapterDelegate()
+                ), listPost
             )
             binding.recycler.adapter = adapter2
         }
