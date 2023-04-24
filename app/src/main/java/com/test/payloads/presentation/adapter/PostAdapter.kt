@@ -1,37 +1,31 @@
 package com.test.payloads.presentation.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import com.test.delegate.holder.Delegate
+import com.test.diffutiladapter.adapter.ListDelegateAdapter
+import com.test.payloads.data.model.DisplayPrint
 import com.test.payloads.data.model.News
 import com.test.payloads.data.model.Post
 import com.test.payloads.databinding.ItemNewsBinding
 import com.test.payloads.databinding.ItemPostBinding
+import com.test.payloads.test.DelegateNews
+import com.test.payloads.test.DelegatePost
 
-class PostAdapter(private val onClickItem: (position: Int) -> Unit) :
-    ListAdapter<Post, PostViewHolder>(PostDiff()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        PostViewHolder.create(parent, onClickItem)
 
-    override fun onBindViewHolder(
-        holder: PostViewHolder,
-        position: Int,
-        payloads: MutableList<Any>,
-    ) {
-        if (payloads.isEmpty())
-            super.onBindViewHolder(holder, position, payloads)
-        else holder.bind(payloads)
-    }
+class PostAdapter( onClickItem: (position: Int) -> Unit) :
+    ListDelegateAdapter<DisplayPrint>(DisplayDiff()) {
 
-    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    init {
+        addDelegate( DelegateNews())
+        addDelegate(DelegatePost(onClickItem))
     }
 }
 
 class PostViewHolder(private val binding: ItemPostBinding, onClickItem: (position: Int) -> Unit) :
-    RecyclerView.ViewHolder(binding.root) {
+    Delegate.ViewHolder<Post>(binding.root) {
 
     init {
         binding.favoriteIcon.setOnClickListener {
@@ -39,13 +33,13 @@ class PostViewHolder(private val binding: ItemPostBinding, onClickItem: (positio
         }
     }
 
-    fun bind(item: Post) {
+    override fun bind(item: Post) {
         binding.imagePost.setImageResource(item.poster)
         binding.title.text = item.text
         binding.favoriteIcon.isSelected = item.isFavorite
     }
 
-    fun bind(payloads: MutableList<Any>) {
+    override fun bind(item: Post, payloads: MutableList<Any>) {
         binding.favoriteIcon.isSelected = payloads.last() as Boolean
     }
 
@@ -58,11 +52,10 @@ class PostViewHolder(private val binding: ItemPostBinding, onClickItem: (positio
 
 }
 
-
 class NewsViewHolder(private val binding: ItemNewsBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+    Delegate.ViewHolder<News>(binding.root) {
 
-    fun bind(item: News) {
+    override fun bind(item: News) {
         binding.title.text = item.text
     }
 
@@ -71,17 +64,19 @@ class NewsViewHolder(private val binding: ItemNewsBinding) :
             ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-
 }
 
-class PostDiff : DiffUtil.ItemCallback<Post>() {
-    override fun areItemsTheSame(oldItem: Post, newItem: Post) = oldItem.id == newItem.id
+class DisplayDiff : DiffUtil.ItemCallback<DisplayPrint>() {
+    override fun areItemsTheSame(oldItem: DisplayPrint, newItem: DisplayPrint) =
+        oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: Post, newItem: Post) = oldItem == newItem
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(oldItem: DisplayPrint, newItem: DisplayPrint) =
+        oldItem == newItem
 
-    override fun getChangePayload(oldItem: Post, newItem: Post): Any? {
-        if (oldItem.isFavorite != newItem.isFavorite) return newItem.isFavorite
+    override fun getChangePayload(oldItem: DisplayPrint, newItem: DisplayPrint): Any? {
+        if (oldItem is Post && newItem is Post)
+            if (oldItem.isFavorite != newItem.isFavorite) return newItem.isFavorite
         return super.getChangePayload(oldItem, newItem)
     }
-
 }
