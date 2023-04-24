@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.MainActivity">
+    tools:context="ru.sr.delegate.app.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view_tag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.test.payloads.presentation.PostFragment"
+        android:name="ru.sr.delegate.presentation.PostFragment"
         />
 
 </FrameLayout>
