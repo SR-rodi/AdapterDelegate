@@ -1,10 +1,10 @@
-package com.test.diffutiladapter.adapter
+package com.test.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.test.diffutiladapter.manager.AdaptersDelegateManager
+import com.test.manager.AdaptersDelegateManager
 
 abstract class PagingDelegateAdapter<Item : Any>(
     diffUtil: DiffUtil.ItemCallback<Item>,

@@ -1,8 +1,8 @@
-package com.test.payloads.test
+package com.test.payloads.presentation.adapter
 
 
 import android.view.LayoutInflater
-import com.test.diffutiladapter.adapter.adapterDelegate
+import com.test.adapter.adapterDelegate
 import com.test.payloads.data.model.DisplayPrint
 import com.test.payloads.data.model.News
 import com.test.payloads.data.model.Post

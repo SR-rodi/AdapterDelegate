@@ -1,9 +1,9 @@
-package com.test.diffutiladapter.adapter
+package com.test.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.test.diffutiladapter.manager.AdaptersDelegateManager
+import com.test.manager.AdaptersDelegateManager
 
 abstract class RecyclerViewDelegateAdapter<Item> : Adapter<RecyclerView.ViewHolder>() {
 

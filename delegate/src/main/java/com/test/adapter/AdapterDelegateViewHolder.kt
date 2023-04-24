@@ -1,4 +1,4 @@
-package com.test.diffutiladapter.adapter
+package com.test.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding

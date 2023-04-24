@@ -1,9 +1,10 @@
-package com.test.diffutiladapter.adapter
+package com.test.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
+@Suppress("UNCHECKED_CAST")
 class DslListAdapterDelegate<Item : Interface, Interface, VB : ViewBinding>(
     private val viewBinding: (parent: ViewGroup) -> VB,
     private val on: (item: Interface) -> Boolean,

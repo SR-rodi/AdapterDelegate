@@ -1,4 +1,4 @@
-package com.test.diffutiladapter.adapter
+package com.test.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -22,8 +22,8 @@ interface AdapterDelegate<I> {
 inline fun <T,reified I : T ,VB:ViewBinding> adapterDelegate(
     noinline viewBinding: (parent: ViewGroup) -> VB,
     noinline on: (item: T) -> Boolean = { item -> item is I },
-    noinline block: AdapterDelegateViewHolder<I,VB>.()->Unit,
-):AdapterDelegate<T> {
+    noinline block: AdapterDelegateViewHolder<I, VB>.()->Unit,
+): AdapterDelegate<T> {
 
     return DslListAdapterDelegate(viewBinding, on, block)
 }
