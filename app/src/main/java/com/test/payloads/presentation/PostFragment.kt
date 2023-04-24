@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.test.payloads.databinding.FragmentPostBinding
-import com.test.payloads.presentation.adapter.PostAdapter
+import com.test.payloads.presentation.adapter.BaseDelegateAdapter
+import com.test.payloads.presentation.adapter.ListAdapter
+import com.test.payloads.presentation.adapter.PagingAdapter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -16,8 +18,9 @@ class PostFragment : Fragment() {
     private var _binding: FragmentPostBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter by lazy { PostAdapter(::onClickItem) }
-
+    private val listAdapter by lazy { ListAdapter(::onClickItem) }
+    private val pagingAdapter by lazy { PagingAdapter(::onClickItem) }
+    private val baseAdapter by lazy { BaseDelegateAdapter(::onClickItem) }
     private val viewModel by viewModel<PostViewModel>()
 
     override fun onCreateView(
@@ -31,18 +34,29 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recycler.adapter = adapter
+        binding.recycler.adapter = listAdapter
+        pagerObserver()
         postObserver()
     }
 
     private fun postObserver() = viewLifecycleOwner.lifecycleScope.launch {
         viewModel.post.collect { listPost ->
-            adapter.submitList(listPost)
+            listAdapter.submitList(listPost)
+            baseAdapter.submitList(listPost)
+
+
         }
     }
 
-    private fun onClickItem(position: Int) {
-        viewModel.favoriteWorker(position)
+    private fun pagerObserver() = viewLifecycleOwner.lifecycleScope.launch {
+        viewModel.testPager.collect { data ->
+            pagingAdapter.submitData(data)
+        }
+    }
+
+
+    private fun onClickItem(itemPosition: Int) {
+        viewModel.favoriteWorker(itemPosition)
     }
 
     override fun onDestroyView() {
