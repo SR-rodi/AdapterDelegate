@@ -2,7 +2,6 @@ package com.test.diffutiladapter.manager
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.test.delegate.holder.Delegate
 import com.test.diffutiladapter.adapter.AdapterDelegate
 
 class AdaptersDelegateManager<I> {
@@ -40,14 +39,14 @@ class AdaptersDelegateManager<I> {
         return delegate.onCreateViewHolder(parent)
     }
 
-    fun onBindViewHolder(item:I, holder: Delegate.ViewHolder<I>) {
+    fun onBindViewHolder(item:I, holder: RecyclerView.ViewHolder) {
         val delegate =
             mapDelegates[holder.itemViewType] ?: throw Exception("AdapterDelegate not added")
         delegate.onBindViewHolder(holder, item)
     }
 
     fun onBindViewHolder(
-        item: I, holder: Delegate.ViewHolder<I>, payloads: MutableList<Any>,
+        item: I, holder: RecyclerView.ViewHolder, payloads: MutableList<Any>,
     ) {
         val delegate =
             mapDelegates[holder.itemViewType] ?: throw Exception("AdapterDelegate not added")

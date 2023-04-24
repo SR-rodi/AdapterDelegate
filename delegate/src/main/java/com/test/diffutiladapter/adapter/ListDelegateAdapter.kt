@@ -3,12 +3,12 @@ package com.test.diffutiladapter.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.test.delegate.holder.Delegate
+import androidx.recyclerview.widget.RecyclerView
 import com.test.diffutiladapter.manager.AdaptersDelegateManager
 
 abstract class ListDelegateAdapter<Interface>(
     diffUtil: DiffUtil.ItemCallback<Interface>,
-) : ListAdapter<Interface, Delegate.ViewHolder<Interface>>(diffUtil) {
+) : ListAdapter<Interface, RecyclerView.ViewHolder>(diffUtil) {
 
     private val delegateManager = AdaptersDelegateManager<Interface>()
 
@@ -23,17 +23,16 @@ abstract class ListDelegateAdapter<Interface>(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): Delegate.ViewHolder<Interface> {
-        @Suppress("UNCHECKED_CAST")
-        return delegateManager.onCreateViewHolder(parent, viewType) as  Delegate.ViewHolder<Interface>
+    ): RecyclerView.ViewHolder {
+        return delegateManager.onCreateViewHolder(parent, viewType)
     }
 
-    override fun onBindViewHolder(holder: Delegate.ViewHolder<Interface>, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         delegateManager.onBindViewHolder(getItem(position), holder)
     }
 
     override fun onBindViewHolder(
-        holder: Delegate.ViewHolder<Interface>,
+        holder: RecyclerView.ViewHolder,
         position: Int,
         payloads: MutableList<Any>,
     ) {

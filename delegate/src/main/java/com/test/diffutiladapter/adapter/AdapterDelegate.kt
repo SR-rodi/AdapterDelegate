@@ -2,6 +2,7 @@ package com.test.diffutiladapter.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
 interface AdapterDelegate<I> {
 
@@ -17,3 +18,13 @@ interface AdapterDelegate<I> {
         payloads: MutableList<Any>,
     )
 }
+
+inline fun <T,reified I : T ,VB:ViewBinding> adapterDelegate(
+    noinline viewBinding: (parent: ViewGroup) -> VB,
+    noinline on: (item: T) -> Boolean = { item -> item is I },
+    noinline block: AdapterDelegateViewHolder<I,VB>.()->Unit,
+):AdapterDelegate<T> {
+
+    return DslListAdapterDelegate(viewBinding, on, block)
+}
+

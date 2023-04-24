@@ -1,33 +1,37 @@
 package com.test.payloads.test
 
-import android.view.ViewGroup
-import com.test.delegate.ItemDelegate
+
+import android.view.LayoutInflater
+import com.test.diffutiladapter.adapter.adapterDelegate
 import com.test.payloads.data.model.DisplayPrint
 import com.test.payloads.data.model.News
 import com.test.payloads.data.model.Post
-import com.test.payloads.presentation.adapter.NewsViewHolder
-import com.test.payloads.presentation.adapter.PostViewHolder
+import com.test.payloads.databinding.ItemNewsBinding
+import com.test.payloads.databinding.ItemPostBinding
 
-class DelegatePost(
-    private val onClickItem: (position: Int) -> Unit,
-) : ItemDelegate<DisplayPrint, Post, PostViewHolder>() {
-
-    override fun isForViewType(item: DisplayPrint): Boolean {
-        return item is Post
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup): PostViewHolder {
-        return PostViewHolder.create(parent, onClickItem)
+fun newsDelegate() = adapterDelegate<DisplayPrint, News, ItemNewsBinding>({ parent ->
+    ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+}) {
+    bind {
+        binding.title.text = item.text
     }
 }
 
-class DelegateNews : ItemDelegate<DisplayPrint, News, NewsViewHolder>() {
+fun postDelegate(onClickItem: (position: Int) -> Unit) =
+    adapterDelegate<DisplayPrint, Post, ItemPostBinding>({ parent ->
+        ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }) {
 
-    override fun isForViewType(item: DisplayPrint): Boolean {
-        return item is News
-    }
+        binding.favoriteIcon.setOnClickListener {
+            onClickItem(bindingAdapterPosition)
+        }
+        bind {
+            binding.imagePost.setImageResource(item.poster)
+            binding.title.text = item.text
+            binding.favoriteIcon.isSelected = item.isFavorite
+        }
 
-    override fun onCreateViewHolder(parent: ViewGroup): NewsViewHolder {
-        return NewsViewHolder.create(parent)
+        bindForPayloads { payloads ->
+            binding.favoriteIcon.isSelected = payloads.last() as Boolean
+        }
     }
-}

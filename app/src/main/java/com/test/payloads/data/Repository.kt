@@ -1,17 +1,23 @@
 package com.test.payloads.data
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.test.payloads.R
 import com.test.payloads.data.model.DisplayPrint
 import com.test.payloads.data.model.News
 import com.test.payloads.data.model.Post
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 
 
 class Repository {
 
     private val list = mutableListOf(
         Post(1, "Новая надежда", R.drawable.test_1, false),
-        News(1,"Вот так встреча"),
+        News(1, "Вот так встреча", false),
         Post(2, "Старая надежда", R.drawable.test_2, false),
         Post(3, "Привет", R.drawable.test_3, true),
         Post(4, "Пока", R.drawable.test_1, false),
@@ -27,5 +33,26 @@ class Repository {
     suspend fun favoriteWorker(id: Int) {
         delay(100)
     }
+
+    fun getPagingData(): Flow<PagingData<DisplayPrint>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10, enablePlaceholders = false
+            ),
+            pagingSourceFactory = { PagingSoursTest(list) }
+        ).flow
+    }
 }
 
+class PagingSoursTest(private val list: List<DisplayPrint>) : PagingSource<Int, DisplayPrint>() {
+    override fun getRefreshKey(state: PagingState<Int, DisplayPrint>): Int? {
+        return null
+    }
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DisplayPrint> {
+        return LoadResult.Page(
+            data = list, nextKey = null, prevKey = null
+        )
+    }
+
+}
