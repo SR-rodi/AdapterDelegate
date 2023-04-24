@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.test.delegate'
+    namespace 'ru.sr.delegate'
     compileSdk 33
 
     defaultConfig {

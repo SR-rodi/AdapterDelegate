@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.test.payloads'
+    namespace 'ru.sr.payloads'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.test.payloads"
+        applicationId "ru.sr.delegate"
         minSdk 26
         targetSdk 33
         versionCode 1
