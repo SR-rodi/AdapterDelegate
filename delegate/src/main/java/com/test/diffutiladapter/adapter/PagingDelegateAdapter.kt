@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.test.diffutiladapter.manager.AdaptersDelegateManager
 
-abstract class PagingDelegateAdapter<Interface : Any>(
-    diffUtil: DiffUtil.ItemCallback<Interface>,
-) : PagingDataAdapter<Interface, RecyclerView.ViewHolder>(diffUtil) {
+abstract class PagingDelegateAdapter<Item : Any>(
+    diffUtil: DiffUtil.ItemCallback<Item>,
+) : PagingDataAdapter<Item, RecyclerView.ViewHolder>(diffUtil) {
 
-    private val delegateManager = AdaptersDelegateManager<Interface>()
+    private val delegateManager = AdaptersDelegateManager<Item>()
 
-    fun addDelegate(delegate: AdapterDelegate<Interface>) {
+    fun addDelegate(delegate: AdapterDelegate<Item>) {
         delegateManager.addDelegate(delegate)
     }
 
